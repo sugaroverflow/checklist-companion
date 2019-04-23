@@ -7,7 +7,7 @@ const Header = () => {
     <nav className="navbar navbar-default">
       <div className="container-fluid">
         <NavLink to="/" className="navbar-brand">
-          <img src="images/pluralsight-logo.png" />
+          <img src="/images/pluralsight-logo.png" />
         </NavLink>
         <ul className="nav navbar-nav">
           <li className="breadcrumb-item">

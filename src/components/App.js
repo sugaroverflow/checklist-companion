@@ -4,11 +4,11 @@ import HomePage from "./home/HomePage";
 import AboutPage from "./about/AboutPage";
 import Header from "./common/Header";
 import PageNotFound from "./PageNotFound";
-import CategoryPage from "./SiteSurvey/CategoriesPage";
-// import Sections from "./SiteSurvey/SectionsPage";
-// import Tasks from "./SiteSurvey/TasksPage";
-// import SubTasks from "./SiteSurvey/SubTasksPage";
-// import SubTaskItem from "./SiteSurvey/SubTaskItem";
+import SiteSurveyPage from "./SiteSurvey/SiteSurveyPage";
+import CategoryPage from "./SiteSurvey/CategoryPage";
+import PhasePage from "./SiteSurvey/PhasePage";
+import TaskPage from "./SiteSurvey/TaskPage";
+import SubtaskPage from "./SiteSurvey/SubtaskPage";
 
 function App() {
   return (
@@ -16,17 +16,15 @@ function App() {
       <Header />
       <Switch>
         <Route exact path="/" component={HomePage} />
-        <Route path="/sitesurvey" component={CategoryPage} />
-        {/* <Route path="category/:id" component={Sections} />
-        <Route path="tasks/:id" component={Tasks} />
-        <Route path="subTasks/:id" component={SubTasks} />
-        <Route path="subTaskItem/:id" component={SubTaskItem} /> */}
+        <Route path="/sitesurvey" component={SiteSurveyPage} />
+        <Route path="/category/:id" component={CategoryPage} />
+        <Route path="/phase/:id" component={PhasePage} />
+        <Route path="/task/:id" component={TaskPage} />
+        <Route path="/subtask/:id" component={SubtaskPage} />
         <Route path="/about" component={AboutPage} />
-        {/* <NotFoundRoute handler={require("./components/notFoundPage")} /> */}
+        <Redirect from="/about-us" to="/about" />
+        <Redirect from="/about/*" to="/about" />
         <Route component={PageNotFound} />
-        <Redirect from="about-us" to="about" />
-        <Redirect from="awthurs" to="authors" />
-        <Redirect from="about/*" to="about" />
       </Switch>
     </div>
   );
