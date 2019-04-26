@@ -122,7 +122,7 @@ var TaskApi = {
   },
 
   getTaskById: function(taskId) {
-    var task = tasks.filter(item => item.task_id === taskId);
+    var task = tasks.find(item => item.task_id === taskId);
     return _clone(task);
   },
 
@@ -177,8 +177,13 @@ var SubtaskApi = {
     return _clone(subtasks);
   },
 
-  getSubtaskById: function(id) {
-    var subtask = subtasks.filter(item => item.id === id);
+  getSubtaskById: function(subtaskId) {
+    var subtask = subtasks.find(item => item.id === subtaskId);
+    return _clone(subtask);
+  },
+
+  getSubtasksByTaskId: function(taskId) {
+    var subtask = subtasks.filter(item => item.task_id === taskId).sort((a, b) => a.OrderNum - b.OrderNum);
     return _clone(subtask);
   },
 

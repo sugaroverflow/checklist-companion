@@ -1,8 +1,10 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
+import PhaseCard from "./PhaseCard";
 const CategoryApi = require("../../API/SiteSurveyApi").CategoryApi;
 const PhaseApi = require("../../API/SiteSurveyApi").PhaseApi;
+
 
 class CategoryPage extends React.Component {
   constructor(props) {
@@ -12,8 +14,8 @@ class CategoryPage extends React.Component {
       category: null,
       phases: []
     };
-  }
-  componentWillMount() {
+  }  
+  componentDidMount() {
     var categoryId = this.props.match.params.id;
 
     if (categoryId) {
@@ -23,10 +25,8 @@ class CategoryPage extends React.Component {
       });
     }
   }
-  // componentDidMount() {
-  //   this.setState({ category: CategoryApi.getCategoryById() });
-  // }
   render() {
+    if(this.state.phases.length>0)
     return (
       <div>
         <h1>
@@ -34,38 +34,14 @@ class CategoryPage extends React.Component {
             {this.state.category.titleEng}
           </NavLink>
         </h1>
-        <div>{this.state.phases.map(CreatePhaseRow, this)}</div>
+        <div>{this.state.phases.map(phase => (
+          <PhaseCard key={phase.phase_id} phase={phase}/>
+          ))}</div>
       </div>
     );
+    else
+    return (<div>No item found!</div>);
   }
-}
-
-function CreatePhaseRow(phase) {
-  return (
-    <div key={phase.phase_id}>
-      <div className="card mb-2 d-inline-block">
-        <div className="card-body">
-          <img
-            className="card-img-top"
-            src="../images/pluralsight-logo.png"
-            alt="Card image cap"
-          />
-          <p className="card-text">{phase.titleEng}</p>
-          <p className="card-text">Phase {phase.OrderNum}</p>
-          <p className="card-text">{phase.descEng}</p>
-          <p className="card-text">
-            {PhaseApi.getCompletedSubtasksCount(phase.phase_id)}
-          </p>
-          <h2 className="card-title h5">
-            <NavLink className="card-link" to={"/phase/" + phase.phase_id}>
-              VIEW
-            </NavLink>
-          </h2>
-        </div>
-      </div>
-      <br />
-    </div>
-  );
 }
 
 CategoryPage.propTypes = {

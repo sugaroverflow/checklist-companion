@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
+import TaskCard from "./TaskCard";
 const PhaseApi = require("../../API/SiteSurveyApi").PhaseApi;
 const TaskApi = require("../../API/SiteSurveyApi").TaskApi;
 
@@ -12,8 +13,8 @@ class PhasePage extends React.Component {
       phase: null,
       tasks: []
     };
-  }
-  componentWillMount() {
+  }  
+  componentDidMount() {
     var phaseId = this.props.match.params.id;
     if (phaseId) {
       this.setState({
@@ -22,42 +23,24 @@ class PhasePage extends React.Component {
       });
     }
   }
-  // componentDidMount() {
-  //   this.setState({ Phase: PhaseApi.getPhaseById() });
-  // }
   render() {
+    if(this.state.phase)
     return (
       <div>
         <h1>
-          <NavLink to="/task" className="navbar-brand">
+          <NavLink to={"/category/"+this.state.phase.category_id} className="navbar-brand">
             {"< Phase " +
               this.state.phase.OrderNum +
               " - " +
               this.state.phase.titleEng}
           </NavLink>
         </h1>
-        <div>{this.state.tasks.map(CreateTaskRow, this)}</div>
+        <div>{this.state.tasks.map(task =>(<TaskCard key={task.task_id} task={task}/>))}</div>
       </div>
-    );
+    )
+    else
+    return (<div>No item found!</div>);
   }
-}
-
-function CreateTaskRow(task) {
-  return (
-    <div key={task.task_id}>
-      <div className="card mb-2 d-inline-block">
-        <div className="card-body">
-          <p className="card-text">{task.titleEng}</p>
-          <p className="card-text">
-            <NavLink className="card-link" to={"/Task/" + task.task_id}>
-              VIEW
-            </NavLink>
-          </p>
-        </div>
-      </div>
-      <br />
-    </div>
-  );
 }
 
 PhasePage.propTypes = {

@@ -1,52 +1,49 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-//import PropTypes from "prop-types";
+import PropTypes from "prop-types";
+import SubtaskCard from "./SubtaskCard";
 const TaskApi = require("../../API/SiteSurveyApi").TaskApi;
+const SubtaskApi = require("../../API/SiteSurveyApi").SubtaskApi;
 
 class TaskPage extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      tasks: []
+      task: null,
+      subtasks: []
     };
   }
   componentDidMount() {
-    this.setState({ categories: TaskApi.getAllChecklistitems() });
+    var taskId = this.props.match.params.id;
+    
+    this.setState({ 
+      task: TaskApi.getTaskById(taskId),
+      subtasks: SubtaskApi.getSubtasksByTaskId(taskId) 
+    });    
   }
   render() {
+    if(this.state.task){
     return (
       <div>
-        <h1>Categories</h1>
-        <div>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>{this.state.tasks.map(CreateTaskRow, this)}</tbody>
-          </table>
-        </div>
+        <h1>
+          <NavLink to={"/phase/"+this.state.task.phase_id} className="navbar-brand">
+             {"< " + this.state.task.titleEng}
+          </NavLink>
+        </h1>
+        <div>{this.state.subtasks.map(subtask =>(
+          
+        <SubtaskCard key={subtask.subtask_id} subtask={subtask}/>
+        ))}</div>
       </div>
-    );
+    )}
+    else
+    return (<div>No item found!</div>);
   }
 }
 
-function CreateTaskRow(task) {
-  return (
-    <tr key={task.id}>
-      <td>
-        <NavLink to="TasksPage" params={{ id: task.id }}>
-          {task.id}
-        </NavLink>
-      </td>
-      <td>{task.titleEng}</td>
-      <td>{task.descEng}</td>
-    </tr>
-  );
-}
+TaskPage.propTypes = {
+  match: PropTypes.object.isRequired
+};
 
 export default TaskPage;
